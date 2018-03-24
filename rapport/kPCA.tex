@@ -1,2 +1,32 @@
 \section{PCA avec noyau}
 
+Dans le contexte de l'analyse par composantes principales linéaire, on trouvait les valeurs et vecteurs propres qui correspondaient à la matrice de covariance 
+
+\begin{equation*}
+Var(X) = \frac{1}{N} \sum_{i = 1}^N \textbf{x}_i \textbf{x}_i^T.
+\end{equation*}
+
+\cite{scholkopf1997kernel} proposent de répéter cette analyse sur une transformation des données originales, i.e. trouver les valeurs et vecteurs propres de
+
+\begin{equation}\label{eq:covkernel}
+Cov(\Phi(X)) = \frac{1}{N} \sum_{i = 1}^{N} \Phi(\textbf{x}_i)\Phi(\textbf{x}_i)^T.
+\end{equation}
+
+Ensuite, en appliquant le "truc du noyau" présenté dans la section (\ref{sec:kernel}), on évite de calculer explicitement les données $\Phi(\textbf{x})$, il suffit de calculer la matrice des noyaux.
+
+
+\subsection{Normalisation des données}
+
+Dans le contexte de l'analyse par composantes principales, on conseil souvent de centrer et réduire les données. Par contre, dans le contexte de projection des données dans l'espace $\mathcal{F}$ et profiter du truc du noyau, on ne peut pas calculer $\widetilde{\Phi}(\textbf{x}_i) = \Phi(\textbf{x}_i) - \frac{1}{N}\sum_{i = 1}^{N}\Phi(\textbf{x}_i)$. On peut calculer ***********
+Soit la matrice $K$, où 
+$$K_{ij} = (k(\textbf{x}_i, \textbf{x}_j))_{ij}.$$
+
+Alors, on peut centrer la matrice $\tilde{K}$ selon
+
+\begin{equation*}
+\tilde{K}_{ij} = k - \mathbbm{1}_NK - K\mathbbm{1}_N + \mathbbm{1}_NK\mathbbm{1}_N,
+\end{equation*}
+
+où $(\mathbbm{1}_N)_{ij} := \frac{1}{N}$. 
+
+

@@ -1,4 +1,4 @@
-\section{Fonction noyau}
+\section{Fonction noyau}\label{sec:kernel}
 
 L'idée de l'espace des attributs est de projeter les données originales par une fonction non linéaire vers un nouvel espace. Formellement, on a 
 
@@ -11,10 +11,8 @@ où les données $\textbf{x}_1, \textbf{x}_2. \dots, \textbf{x}_n \in \mathbb{R}
 
 Le produit scalaire entre deux espaces d'attributs peut être reformulé en terme d'une fonction noyau $\textrm{k}$ par
 $$\textrm{k}(\textbf{x}, \textbf{y}) = (\Phi(\textbf{x})\cdot \Phi(\textbf{y})).$$
-Dans plusieurs problèmes d'apprentissage, le "truc du noyau" permet d'éviter de calculer directement les nouvelles données $\Phi(\textbf{x}_n)$. En effet, pour certains algorithmes d'apprentissage, 
 
-
-car on peut reformuler les équations de mise à jour par le produit scalaire entre différentes données et ainsi les remplacer par la fonction de noyau. Des exemples de noyaux communément utilisés sont présentés dans la table \ref{tab:kernels}.
+Dans plusieurs problèmes d'apprentissage, le "truc du noyau" permet d'éviter de calculer directement les nouvelles données $\Phi(\textbf{x}_n)$. En effet, pour certains algorithmes d'apprentissage, il n'est pas nécessaire d'avoir toutes les données car on peut reformuler les équations de mise à jour par le produit scalaire entre différentes données et ainsi les remplacer par la fonction de noyau. Des exemples de noyaux communément utilisés sont présentés dans la table \ref{tab:kernels}.
 
 \begin{table}[H]
 	\centering
