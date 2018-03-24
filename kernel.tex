@@ -1,1 +1,31 @@
-\section{Fonction noyeau}
+\section{Fonction noyau}
+
+L'idée de l'espace des attributs est de projeter les données originales par une fonction non linéaire vers un nouvel espace. Formellement, on a 
+
+\begin{align*}
+\Phi : \mathbb{R}^N &\to \mathcal{F} \\
+\textbf{x} &\mapsto \Phi(\textbf{x})
+\end{align*}
+
+où les données $\textbf{x}_1, \textbf{x}_2. \dots, \textbf{x}_n \in \mathbb{R}^N$ est projeté vers un espace d'attributs $\mathcal{F}$ \cite{muller2001introduction}. Souvent, la dimension de $\mathcal{F}$ est beaucoup plus élevée que l'espace originale. L'apprentissage statistique peut maintenant être fait sur les données $(\Phi(\textbf{x}_1), y_1), (\Phi(\textbf{x}_2), y_2), \dots, (\Phi(\textbf{x}_n), y_n)$. \\
+
+Le produit scalaire entre deux espaces d'attributs peut être reformulé en terme d'une fonction noyau $\textrm{k}$ par
+$$\textrm{k}(\textbf{x}, \textbf{y}) = (\Phi(\textbf{x})\cdot \Phi(\textbf{y})).$$
+Dans plusieurs problèmes d'apprentissage, le "truc du noyau" permet d'éviter de calculer directement les nouvelles données $\Phi(\textbf{x}_n)$. En effet, pour certains algorithmes d'apprentissage, 
+
+
+car on peut reformuler les équations de mise à jour par le produit scalaire entre différentes données et ainsi les remplacer par la fonction de noyau. Des exemples de noyaux communément utilisés sont présentés dans la table \ref{tab:kernels}.
+
+\begin{table}[H]
+	\centering
+\begin{tabular}{|c|c|}
+	\hline
+	         Nom           &                  $k(\textbf{x}, \textbf{y})$                  \\ \hline
+	    Gaussien (RBF)     & $\exp \left(\frac{-|| \textbf{x} - \textbf{y}||^2}{c}\right)$ \\ \hline
+	      Polynomial       &         $((\textbf{x} \cdot \textbf{y} + \theta))^d$          \\ \hline
+	     Sigmodoidal       &    $\tanh (\kappa (\textbf{x} \cdot \textbf{y}) + \theta)$    \\ \hline
+	Multiquadrique inversé &     $\frac{1}{\sqrt{||\textbf{x}-\textbf{y}||^2 + c^2}}$      \\ \hline
+\end{tabular} 
+\caption{Noyaux communs}
+\label{tab:kernels}
+\end{table}
