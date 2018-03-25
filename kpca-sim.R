@@ -16,8 +16,7 @@ plot(circle_data, col = circle_class, asp = 1)
 kpc_rbf <- kpca(circle_data, kernel = "rbfdot", kpar = list(sigma = 0.05), features = 2)
 kpc_bessel <- kpca(circle_data, kernel = "besseldot", kpar = list(sigma = 0.6, order = 3), features = 2)
 
-par(mfrow = c(1, 3))
-plot(circle_data, col = circle_class, asp = 1, main = "Données originales", pch = 19)
+par(mfrow = c(1, 2))
 plot(rotated(kpc_rbf), col = circle_class, pch = 19, main = "kpca rbf", asp = 1, xlab = "Première composante", ylab = "Deuxième composante")
 plot(rotated(kpc_bessel), col = circle_class, pch = 19, main = "kpca bessel", asp = 1, xlab = "Première composante", ylab = "Deuxième composante")
 

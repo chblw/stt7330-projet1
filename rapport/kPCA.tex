@@ -1,26 +1,29 @@
 \section{PCA avec noyau}
 
-Dans le contexte de l'analyse par composantes principales linéaire, on trouvait les valeurs et vecteurs propres qui correspondaient à la matrice de covariance 
+Dans le contexte de l'ACP, on trouvait les valeurs et vecteurs propres qui correspondaient à la matrice de covariance. Si les données sont centrées, i.e. $\sum_{i = 1}^{N}x_i = 0$, on a 
 
 \begin{equation*}
-Var(X) = \frac{1}{N} \sum_{i = 1}^N \textbf{x}_i \textbf{x}_i^T.
+C = Var(X) = \frac{1}{N} \sum_{i = 1}^N \textbf{x}_i \textbf{x}_i^T.
 \end{equation*}
 
 \cite{scholkopf1997kernel} proposent de répéter cette analyse sur une transformation des données originales, i.e. trouver les valeurs et vecteurs propres de
 
 \begin{equation}\label{eq:covkernel}
-Cov(\Phi(X)) = \frac{1}{N} \sum_{i = 1}^{N} \Phi(\textbf{x}_i)\Phi(\textbf{x}_i)^T.
+\overline{C} = \frac{1}{N} \sum_{i = 1}^{N} \Phi(\textbf{x}_i)\Phi(\textbf{x}_i)^T.
 \end{equation}
 
-Ensuite, en appliquant le "truc du noyau" présenté dans la section (\ref{sec:kernel}), on évite de calculer explicitement les données $\Phi(\textbf{x})$, il suffit de calculer la matrice des noyaux.
+Ensuite, en appliquant le "truc du noyau" présenté dans la section (\ref{sec:kernel}), on évite de calculer explicitement les données $\Phi(\textbf{x})$, il suffit de calculer la matrice des noyaux. Comme dans l'ACP, on doit faire une décomposition par valeurs et vecteurs propres de 
+
+\begin{equation}\label{eq:covkernel}
+\overline{C} = \frac{1}{N} \sum_{i = 1}^{N} K(\textbf{x}_i, \textbf{x}_i).
+\end{equation}
 
 \subsection{Normalisation des données}
 
-Dans le contexte de l'analyse par composantes principales, on conseil souvent de centrer et réduire les données. Par contre, dans le contexte de projection des données dans l'espace $\mathcal{F}$ et profiter du truc du noyau, on ne peut pas calculer $\tilde{\Phi}(\textbf{x}_i) = \Phi(\textbf{x}_i) - \frac{1}{N}\sum_{i = 1}^{N}\Phi(\textbf{x}_i)$. 
-Soit la matrice $K$, où 
+Dans le développement de l'ACP, on a appliqué l'hypothèse que les données étaient centrées. Par contre, dans le contexte de projection des données dans l'espace $\mathcal{F}$ et pour profiter du truc du noyau, on ne peut pas calculer $$\tilde{\Phi}(\textbf{x}_i) = \Phi(\textbf{x}_i) - \frac{1}{N}\sum_{i = 1}^{N}\Phi(\textbf{x}_i).$$ La solution à ce problème est présenté dans \cite{scholkopf1998nonlinear}. Soit la matrice $K$, où 
 $$K_{ij} = (k(\textbf{x}_i, \textbf{x}_j))_{ij}.$$
 
-Il est possible que $\frac{1}{N} \sum_{i = 1}^{N} \Phi(\textbf{x}) \neq 0$. On doit alors centrer les données selon la passe du p'tit cochon qui tousse suivante : 
+Il est possible que $\frac{1}{N} \sum_{i = 1}^{N} \Phi(\textbf{x}) \neq 0$. On doit alors centrer les données selon le développent suivant : 
 
 \begin{align*}
 \tilde{k}(\textbf{x}_i, \textbf{x}_j) &= \tilde{\Phi}(\textbf{x}_i)^T\tilde{\Phi}(\textbf{x}_j)\\
@@ -35,5 +38,4 @@ Alors, on peut centrer la matrice $\tilde{K}$ selon
 \end{equation*}
 
 où $(\mathbbm{1}_N)_{ij} := \frac{1}{N}$ et éviter de calculer les données $\Phi(\textbf{x})$. 
-
 

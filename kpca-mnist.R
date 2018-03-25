@@ -79,3 +79,25 @@ for(i in 1:4) {
   mat <- apply(mat, 1, rev)
   image(t(mat), col = gray((0:255)/255))
 }
+
+par(mfrow = c(1, 4))
+for(i in 1:4) {
+  mat <- matrix(mnist_data[i, ], 28, 28, byrow = TRUE)
+  mat <- apply(mat, 1, rev)
+  mat <- apply(mat, 2, rev)
+  mat <- apply(mat, 1, rev)
+  image(t(mat), col = gray((0:255)/255))
+}
+
+pc <- prcomp(mnist_data, rank. = 10)
+img <- pc$x %*% t(pc$rotation)
+img <- scale(img, center = -colMeans(mnist_data), scale = FALSE)
+
+par(mfrow = c(1, 4))
+for(i in 1:4) {
+  mat <- matrix(img[i, ], 28, 28, byrow = TRUE)
+  mat <- apply(mat, 1, rev)
+  mat <- apply(mat, 2, rev)
+  mat <- apply(mat, 1, rev)
+  image(t(mat), col = gray((0:255)/255))
+}

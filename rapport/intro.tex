@@ -1,8 +1,3 @@
 \section{Introduction}
 
-
-L'objectif de l'analyse par composantes principales est d'obtenir une représentation des données dans un espace plus restreint en conservant la plus grande quantité d'information possible. Plus précisément, on considère les combinaisons linéaires des variables mesurées pour l'espace restreint. Par contre, on observe souvent que la relation entre les données n'est pas linéaire. L'analyse par composantes par noyau généralise ce modèle pour des combinaisons non-linéaires des attributs. Au lieu de faire une décomposition par valeurs et vecteurs propres sur la matrice de covariance des données centrées
-
-$$\Sigma = Var(X) = \frac{1}{N} \sum_{i = 1}^{N}   \textbf{x}_i\textbf{x}_i^{T},$$
-
-on fait une décomposition par valeurs et vecteurs propres sur la matrice de covariance des données projetées sur un nouvel espace d'attributs.
+Dans la résolution de problèmes reliés à l’étude des données, le statisticien peut être confronté à des jeux de données volumineux ayant un grande nombre d’attributs. Ce genre de jeux de données posent certaines difficultés telles un temps d'exécution élevé, le fléau de la dimension ou encore le sur-apprentissage. Afin de palier à ces problèmes, quelques méthodes efficaces et reconnues ont été développées afin de réduire mathématiquement le nombre de variables explicatives d’un jeu de données. Une de ces techniques est l’analyse par composantes principales (ACP). Ce rapport présente une généralisation de la méthode permettant d’y intégrer des éléments de non linéarité. La motivation de cette généralisation est de permettre de capturer autant de variance tout en réduisant davantage le nombre de composantes principales (CP) utilisées.
