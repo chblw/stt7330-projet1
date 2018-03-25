@@ -14,12 +14,19 @@ Cov(\Phi(X)) = \frac{1}{N} \sum_{i = 1}^{N} \Phi(\textbf{x}_i)\Phi(\textbf{x}_i)
 
 Ensuite, en appliquant le "truc du noyau" présenté dans la section (\ref{sec:kernel}), on évite de calculer explicitement les données $\Phi(\textbf{x})$, il suffit de calculer la matrice des noyaux.
 
-
 \subsection{Normalisation des données}
 
-Dans le contexte de l'analyse par composantes principales, on conseil souvent de centrer et réduire les données. Par contre, dans le contexte de projection des données dans l'espace $\mathcal{F}$ et profiter du truc du noyau, on ne peut pas calculer $\widetilde{\Phi}(\textbf{x}_i) = \Phi(\textbf{x}_i) - \frac{1}{N}\sum_{i = 1}^{N}\Phi(\textbf{x}_i)$. On peut calculer ***********
+Dans le contexte de l'analyse par composantes principales, on conseil souvent de centrer et réduire les données. Par contre, dans le contexte de projection des données dans l'espace $\mathcal{F}$ et profiter du truc du noyau, on ne peut pas calculer $\tilde{\Phi}(\textbf{x}_i) = \Phi(\textbf{x}_i) - \frac{1}{N}\sum_{i = 1}^{N}\Phi(\textbf{x}_i)$. 
 Soit la matrice $K$, où 
 $$K_{ij} = (k(\textbf{x}_i, \textbf{x}_j))_{ij}.$$
+
+Il est possible que $\frac{1}{N} \sum_{i = 1}^{N} \Phi(\textbf{x}) \neq 0$. On doit alors centrer les données selon la passe du p'tit cochon qui tousse suivante : 
+
+\begin{align*}
+\tilde{k}(\textbf{x}_i, \textbf{x}_j) &= \tilde{\Phi}(\textbf{x}_i)^T\tilde{\Phi}(\textbf{x}_j)\\
+&= \left( \Phi(x_i) - \frac{1}{N}\sum_{l = 1}^{N}\Phi(\textbf{x}_l) \right)^T \left(\Phi(x_j) - \frac{1}{N}\sum_{l = 1}^{N}\Phi(\textbf{x}_l)\right)\\
+&= k(\textbf{x}_i, \textbf{x}_j) - \frac{1}{N}\sum_{l = 1}^{N}k(\textbf{x}_i, \textbf{x}_l) - \frac{1}{N}\sum_{l = 1}^{N}k(\textbf{x}_j, \textbf{x}_l) + \frac{1}{N^2} \sum_{l, k}^{N}k(\textbf{x}_l, \textbf{x}_k).
+\end{align*}
 
 Alors, on peut centrer la matrice $\tilde{K}$ selon
 
