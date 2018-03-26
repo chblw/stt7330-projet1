@@ -1,6 +1,5 @@
 \section{Fonction noyau}\label{sec:kernel}
 
-% Tu peux enlever l'intro sur les produits scalaires, je le met juste pour leur rappeler (ou apprendre) le lien.
 On rappelle la propriété suivante du produit scalaire pour les vecteurs $\textbf{x}$ et $\textbf{y}$ : 
 
 $$\textbf{x}\textbf{y}^T = \textbf{x} \cdot \textbf{y}.$$
@@ -8,14 +7,33 @@ $$\textbf{x}\textbf{y}^T = \textbf{x} \cdot \textbf{y}.$$
 En général, lorsque le produit scalaire entre les transformations définis en (\ref{eq:featurespace}) existe, on appèlle cette fonction le noyau et on peut reformuler le produit scalaire comme
 $$\textrm{k}(\textbf{x}, \textbf{y}) = \Phi(\textbf{x})\Phi(\textbf{y})^T = \Phi(\textbf{x})\cdot \Phi(\textbf{y}).$$
 
-Il est important de rappeler que pour obtenir l’information $\textrm{k}$ générée par la projection, les transformations $\mathcal{F}$ n'ont jamais été explicitement calculés. La fonction de noyau permet de calculer directement cette information et il s’agit de la raison pour laquelle les noyaux sont des outils intéressants. Dans plusieurs problèmes d'apprentissage, le "truc du noyau" permet d'éviter de calculer directement les nouvelles données $\Phi(\textbf{x})$. En effet, il n'est parfois pas nécessaire d'avoir toutes les données car on peut reformuler les équations de mise à jour par le produit scalaire entre différents $\Phi(\textbf{x})$ et ainsi les remplacer par la fonction de noyau. \\
+Dans plusieurs problèmes d'apprentissage, le "truc du noyau" permet d'éviter de calculer directement les nouvelles données $\Phi(\textbf{x})$. 
+En effet, il n'est parfois pas nécessaire d'avoir toutes les données car on peut reformuler les équations de mise à jour par le produit scalaire 
+entre différents $\Phi(\textbf{x})$ et ainsi les remplacer par la fonction de noyau. \\
 
-L'exemple jouet ne montrait qu’une projection en 3 dimensions. Cependant, certains noyaux émulent une projection dans un espace de dimensions infinie. En projetant dans un espace ayant un nombre de dimensions infini, il est théoriquement possible de modéliser parfaitement chacun des points des données. On a ainsi l’assurance de trouver un hyperplan séparant les données parfaitement - sans avoir à faire des calculs qui seraient impossibles à faire.\\
+Réutilisons l'exemple fourni à la section précédente. Nous avions le jeu de donnée avec des données réparties selon 3 cercles concentriques 
+et la transformation $\Phi(\textbf{x})= (x_1^2 + \sqrt{2} \times x_1\times x_2 + x_2^2)$. \\ la fonction noyau associée est
 
-% Attention ici. il faut pas nécessairement parler d'hyperplan, seulement qu'on peut trouver une transformation des données pour obtenir une manière linéaire de résoudre le probleme. Ensuite on rappelle que l'ACP est une projection linéaire, alors tadaa magie
+$\k(\textbf{x,y})= (x \dot y)^2$
 
+Concrèetement, cette projection fera en sorte de créer un blocs de points de données par classes à des hauteurs différentes. Cette information, 
+initalement cachée du jeu de données, vient évidente lorsqu'on regarde la valeur de chaque point sur la dimension ajoutée (soit la différence entre les hauteurs de chaque groupe.)
+Si au lieu de projetter les données avec la fonction $\Phi(\textbf{x})$ nous utilisions le noyau associé pour gérérer des valeurs,
+nous aurions une divisione des données qui serait sensiblement similaire \\ 
 
-En pratique, au lieu de sélectionner un espace d'attributs $\mathcal{F}$, on sélectionne directement le noyau. Il n'est pas nécessaire de savoir l'espace d'attributs $\mathcal{F}$ ou la fonction $\Phi$. De plus, il est possible que la fonction $\Phi$ projète des données vers une dimension infinie mais cette fonction n'a pas besoin d’être connue car l'impossibilité analytique de déterminer cette fonction est esquivée par le truc du noyau. Des exemples de noyaux communément utilisés sont présentés dans la table \ref{tab:kernels}.
+Il est important de rappeler que pour obtenir l’information $\textrm{k}$ générée par la projection, les transformations $\mathcal{F}$ n'ont pas à être explicitement calculées. 
+La fonction de noyau permet de calculer directement cette information et il s’agit de la raison pour laquelle les noyaux sont des outils intéressants. \\
+
+L'exemple jouet ne présente qu’une projection en 3 dimensions. Cependant, certains noyaux émulent une projection dans un espace de dimensions infinie. 
+En projetant dans un espace ayant un nombre de dimensions infini, il est théoriquement possible de modéliser 
+parfaitement chacun des points des données. On a ainsi l’assurance de trouver une fonction linéaire séparant les 
+données parfaitement - sans avoir à faire des calculs qui seraient impossibles à faire.\\
+
+En pratique, au lieu de sélectionner un espace d'attributs $\mathcal{F}$, on sélectionne directement le noyau. 
+Il n'est pas nécessaire de savoir l'espace d'attributs $\mathcal{F}$ ou la fonction $\Phi$. De plus, 
+il est possible que la fonction $\Phi$ projète des données vers une dimension infinie mais cette fonction 
+n'a pas besoin d’être connue car l'impossibilité analytique de déterminer cette fonction est esquivée par 
+le truc du noyau. Des exemples de noyaux communément utilisés sont présentés dans la table \ref{tab:kernels}.
 
 \begin{table}[H]
 	\centering
