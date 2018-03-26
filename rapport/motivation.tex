@@ -4,7 +4,7 @@ L’analyse par composantes principales est une technique de réduction de la di
 
 Mathématiquement, l’ACP s'exécute en décomposant la matrice de variance-covariance (ou de corrélation) estimée avec le jeu de données en valeurs et vecteurs propres. La matrice de variance-covariance est définie telle que
 
-$$C = Var(X) = \frac{1}{N} \sum_{i = 1}^{N}   \textbf{x}_i\textbf{x}_i^{T}$$
+$$C = Var(X) = \frac{1}{N} \sum_{i = 1}^{N}   \textbf{x}_i\textbf{x}_i^{T} = \frac{1}{N} \sum_{i = 1}^{N}   \textbf{x}_i \cdot \textbf{x}_i$$
 
 La principale limitation de cette méthodologie est qu’elle ne permet pas d’exploiter l’information contenue dans les interactions non linéaires entre les attributs. De plus, vu que les composantes principales sont indépendantes les unes entres elles, l'information non linéaire peut réapparaitre dans les données en conservant un grand nombre de composantes principales. \\
 

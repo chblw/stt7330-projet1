@@ -1,7 +1,12 @@
 \section{Fonction noyau}\label{sec:kernel}
 
+% Tu peux enlever l'intro sur les produits scalaires, je le met juste pour leur rappeler (ou apprendre) le lien.
+On rappelle la propriété suivante du produit scalaire pour les vecteurs $\textbf{x}$ et $\textbf{y}$ : 
+
+$$\textbf{x}\textbf{y}^T = \textbf{x} \cdot \textbf{y}.$$
+
 En général, lorsque le produit scalaire entre les transformations définis en (\ref{eq:featurespace}) existe, on appèlle cette fonction le noyau et on peut reformuler le produit scalaire comme
-$$\textrm{k}(\textbf{x}, \textbf{y}) = (\Phi(\textbf{x})\cdot \Phi(\textbf{y})).$$
+$$\textrm{k}(\textbf{x}, \textbf{y}) = \Phi(\textbf{x})\Phi(\textbf{y})^T = \Phi(\textbf{x})\cdot \Phi(\textbf{y}).$$
 
 Il est important de rappeler que pour obtenir l’information $\textrm{k}$ générée par la projection, les transformations $\mathcal{F}$ n'ont jamais été explicitement calculés. La fonction de noyau permet de calculer directement cette information et il s’agit de la raison pour laquelle les noyaux sont des outils intéressants. Dans plusieurs problèmes d'apprentissage, le "truc du noyau" permet d'éviter de calculer directement les nouvelles données $\Phi(\textbf{x})$. En effet, il n'est parfois pas nécessaire d'avoir toutes les données car on peut reformuler les équations de mise à jour par le produit scalaire entre différents $\Phi(\textbf{x})$ et ainsi les remplacer par la fonction de noyau. \\
 
