@@ -1,12 +1,12 @@
-\section{PCA avec noyau}
+\section{ACP avec noyau}
 
-Dans le contexte de l'ACP, on trouvait les valeurs et vecteurs propres qui correspondaient à la matrice de covariance. Si les données sont centrées, i.e. $\sum_{i = 1}^{N}x_i = 0$, on a 
+Dans le contexte de l'ACP, on trouvait les valeurs et vecteurs propres qui correspondaient à la matrice de covariance. Si les données sont centrées, c-à-d $\sum_{i = 1}^{N}x_i = 0$, on a 
 
 \begin{equation*}
 C = Var(X) = \frac{1}{N} \sum_{i = 1}^N \textbf{x}_i \textbf{x}_i^T.
 \end{equation*}
 
-\cite{scholkopf1997kernel} proposent de répéter cette analyse sur une transformation des données originales, i.e. trouver les valeurs et vecteurs propres de
+\cite{scholkopf1997kernel} proposent de répéter cette analyse sur une transformation des données originales, c-à-d trouver les valeurs et vecteurs propres de
 
 \begin{equation}\label{eq:covkernel}
 \overline{C} = \frac{1}{N} \sum_{i = 1}^{N} \Phi(\textbf{x}_i)\Phi(\textbf{x}_i)^T.

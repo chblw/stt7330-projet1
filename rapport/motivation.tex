@@ -1,7 +1,7 @@
 \section{Motivation}
 
 L’analyse par composantes principales est une technique de réduction de la dimension d’un jeu de données. Elle permet de projeter les données dans un espace restreint tout en conservant le maximum de variance entre les données. 
-Les axes utilisés par l’analyse sont appelées composantes principales. Ces composantes principales permettent de transposer les 
+Les axes utilisés par l’analyse sont appelés composantes principales. Ces composantes principales permettent de transposer les 
 données en utilisant les meilleures combinaisons linéaires. Les composantes sont ordonnées de telle sorte qu’elles conservent
  une proportion décroissante de la variance du jeu de données. Les premières composantes sont généralement beaucoup plus 
  informatives que les dernières. Il est ainsi possible de réduire la dimension d’un jeu de données en ne considérant que les premières composantes principales tout en conservant une quantité d’information satisfaisante.\\
@@ -19,7 +19,7 @@ Par exemple, les données dans la figure suivante n'ont aucune de relation liné
 	\includegraphics[width=2in]{exemple_1_initial}
 \end{figure}
 
-Ensuite, on une transformation non linéaires sur les données et on obtient 
+Ensuite, on une transformation non linéaire sur les données et on obtient 
 
 \begin{figure}[H]
 	\includegraphics[width=3in]{exemple_1_2d}
@@ -44,7 +44,7 @@ L'idée de l'espace des attributs est de projeter les données originales par un
 \textbf{x} &\mapsto \Phi(\textbf{x}) 
 \end{align}
 
-où les données $\textbf{x}_1, \textbf{x}_2. \dots, \textbf{x}_N \in \mathbb{R}^p$ est projeté vers un espace d'attributs $\mathcal{F}$ \cite{muller2001introduction}. Souvent, la dimension de $\mathcal{F}$ est beaucoup plus élevée que $p$. L'apprentissage statistique peut maintenant être fait sur les données $$(\Phi(\textbf{x}_1), y_1), (\Phi(\textbf{x}_2), y_2), \dots, (\Phi(\textbf{x}_n), y_n).$$
+où les données $\textbf{x}_1, \textbf{x}_2. \dots, \textbf{x}_N \in \mathbb{R}^p$ sont projetées vers un espace d'attributs $\mathcal{F}$ \cite{muller2001introduction}. Souvent, la dimension de $\mathcal{F}$ est beaucoup plus élevée que $p$. L'apprentissage statistique peut maintenant être fait sur les données $$(\Phi(\textbf{x}_1), y_1), (\Phi(\textbf{x}_2), y_2), \dots, (\Phi(\textbf{x}_n), y_n).$$
 
 Afin de motiver cette généralisation du modèle, considérons l'exemple précédent, avec le jeu de données précédent, où
 $$\textbf{x}_1, \textbf{x}_2, \dots, \textbf{x}_N = (x_{1,1},x_{1,2}), (x_{2,1}, x_{2,2}), …, (x_{N,1}, x_{N,2})$$
@@ -60,5 +60,5 @@ Ensuite, on peut reformuler le produit scalaire entre les deux espaces d'attribu
 &= (\textbf{x}_i \cdot \textbf{x}_j)^2.
 \end{align*}
 
-En remplacant avec le résultat précédent, on obtient
+En remplaçant avec le résultat précédent, on obtient
 $$\overline{C} = \frac{1}{N} \sum_{i = 1}^{N} (\textbf{x}_i \cdot \textbf{x}_j)^2$$ et on doit appliquer une décomposition par valeurs et vecteurs propres sur cette matrice.
