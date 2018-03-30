@@ -16,19 +16,25 @@ Par exemple, les données dans la figure suivante n'ont aucune de relation liné
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=2in]{sim-cercle}
+	\includegraphics[width=2in]{exemple_1_initial}
 \end{figure}
 
-Ensuite, on applique deux exemples de transformations non linéaires sur les données et on obtient 
+Ensuite, on une transformation non linéaires sur les données et on obtient 
 
 \begin{figure}[H]
-	\includegraphics[width=\textwidth]{sim-kernel}
+	\includegraphics[width=3in]{exemple_1_2d}
 \end{figure}
 
-On remarque que ces données peuvent être séparés et interprétés linéairement. On peut donc appliquer une ACP sur ces transformations et on obtient 
+A priori, on ne voit pas l'information additionnelle. Cependant, en appliquant une rotation au graphique, on obtient
 
 \begin{figure}[H]
-	\includegraphics[width=\textwidth]{sim-1pc}
+	\includegraphics[width=3in]{exemple_1_3d}
+\end{figure}
+
+On remarque que ces données peuvent être séparées et interprétées linéairement. Une ACP peut s'appliquer sur ces données transformées et on obtient 
+
+\begin{figure}[H]
+	\includegraphics[width=3in]{exemple_1_pca}
 \end{figure}
 
 L'idée de l'espace des attributs est de projeter les données originales par une fonction non linéaire vers un nouvel espace qui permet d'interpréter linéairement les relations entre les attributs. Formellement, on a 
@@ -40,10 +46,10 @@ L'idée de l'espace des attributs est de projeter les données originales par un
 
 où les données $\textbf{x}_1, \textbf{x}_2. \dots, \textbf{x}_N \in \mathbb{R}^p$ est projeté vers un espace d'attributs $\mathcal{F}$ \cite{muller2001introduction}. Souvent, la dimension de $\mathcal{F}$ est beaucoup plus élevée que $p$. L'apprentissage statistique peut maintenant être fait sur les données $$(\Phi(\textbf{x}_1), y_1), (\Phi(\textbf{x}_2), y_2), \dots, (\Phi(\textbf{x}_n), y_n).$$
 
-Afin de motiver cette généralisation du modèle, considérons le jeu de donnée avec $p = 2$, où
+Afin de motiver cette généralisation du modèle, considérons l'exemple précédent, avec le jeu de données précédent, où
 $$\textbf{x}_1, \textbf{x}_2, \dots, \textbf{x}_N = (x_{1,1},x_{1,2}), (x_{2,1}, x_{2,2}), …, (x_{N,1}, x_{N,2})$$
 
-et la transformation $\Phi(\textbf{x})= (x_1^2 + \sqrt{2} \times x_1\times x_2 + x_2^2)$. Visuellement, on projète les données de cercles vers une demi-sphère, où les données dans le centre cercle ont une profondeur faible et les données aux périmètre du cercle ont une profondeur élevée. De plus, la matrice de variance covariance à utiliser pour l’ACP devient
+et la transformation utilisée $\Phi(\textbf{x})= (x_1^2 + \sqrt{2} \times x_1\times x_2 + x_2^2)$. La matrice de variance covariance à utiliser pour l’ACP devient
 $$\overline{C} = \frac{1}{N} \sum_{i = 1}^{N}   \Phi(\textbf{x}_i) \Phi(\textbf{x}_i)^{T}.$$
 
 Ensuite, on peut reformuler le produit scalaire entre les deux espaces d'attributs comme
