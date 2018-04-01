@@ -1,0 +1,142 @@
+---
+title: "ACP avec noyau"
+author: "Jean-Thomas Baillargeon et Christopher Blier-Wong"
+date: "4 avril 2018"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(kernlab)
+library(plotly)
+library(readr)
+library(dplyr)
+```
+
+## Plan
+
+- Motivation
+- Fonction noyau
+- ACP avec noyau
+- Application pratique 
+- Discussion
+
+## Motivation
+
+- L'analyse par composantes principales est la meilleure projection linéaire dans un espace réduit qui permet de conserver le maximum de la variance dans les premières composantes. 
+
+- L'objectif de l'analyse par composantes principales avec noyau est de généraliser l'ACP pour incorporer des relations non linéaires entre les données. 
+
+## Exemple 
+
+```{r, echo = FALSE}
+x <- -5:5
+y <- c(1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1)
+
+plot(x, rep(1, 11), col = y + 2, pch = 20, ylab = "")
+
+```
+
+## Exemple 
+
+```{r, echo = FALSE}
+x <- -5:5
+y <- c(1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1)
+
+plot(x, x ^ 2, col = y + 2, pch = 20, ylab = "")
+```
+
+## Exemple 
+
+```{r, echo = FALSE}
+x <- -5:5
+y <- c(1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1)
+
+plot(x, x ^ 2, col = y + 2, pch = 20, ylab = "")
+abline(h = 2.5)
+```
+
+## Autre exemple 
+
+```{r}
+angles <- runif(200, 0, 2 * pi)
+radius <- runif(200, c(0, 7), c(2, 9))
+circle_class <- rep(c(2,4), 100)
+x <- radius * cos(angles)
+y <- radius * sin(angles)
+
+circle_data <- cbind(x, y)
+
+plot(circle_data, col = circle_class/2 + 5, asp = 1, pch = 19)
+
+
+```
+
+
+## Autre exemple
+
+```{r}
+phi_data = function(x,y) {
+  return(c(x^2,sqrt(2)*x*y,y^2))
+}
+projected_data =numeric(600)
+for(index_to_project in 1:200){
+  point_to_project = circle_data[index_to_project,]
+  projected_point = phi_data(point_to_project[1],point_to_project[2])
+  
+  projected_data[(3*(index_to_project-1)+1):(3*(index_to_project))] = projected_point
+}
+projected_data = matrix(projected_data, nrow=200, ncol=3, byrow = TRUE)
+projected_data_as_dataframe = as.data.frame(projected_data)
+colnames(projected_data_as_dataframe) = c("x", "y", "z")
+pca <- princomp(projected_data_as_dataframe)
+plot(pca$score[,1],pca$scores[,2], col=circle_class/2 + 5,main="Données transformées selon les composantes principales", xlab="Première composante principale", ylab="Deuxième composante principale")
+
+```
+
+## Autre exemple
+
+```{r}
+plotly::plot_ly(projected_data_as_dataframe, x=~x, y=~y, z=~z, color=circle_class) %>%
+  add_markers() %>%
+  layout(scene = list(xaxis = list(title = 'x'),
+                      yaxis = list(title = 'y'),
+                      zaxis = list(title = 'x*y')))
+
+```
+
+
+## Autre exemple
+
+```{r}
+plotly::plot_ly(projected_data_as_dataframe, x=~x, y=~y, z=~z, color=circle_class) %>%
+  add_markers() %>%
+  layout(scene = list(xaxis = list(title = 'x'),
+                      yaxis = list(title = 'y'),
+                      zaxis = list(title = 'x*y')))
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
