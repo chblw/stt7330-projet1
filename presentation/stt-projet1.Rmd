@@ -2,6 +2,7 @@
 title: "ACP avec noyau"
 author: "Jean-Thomas Baillargeon et Christopher Blier-Wong"
 date: "4 avril 2018"
+bibliography: ref.bib
 output: ioslides_presentation
 ---
 
@@ -69,9 +70,37 @@ circle_data <- cbind(x, y)
 
 plot(circle_data, col = circle_class/2 + 5, asp = 1, pch = 19)
 
-
 ```
 
+## Autre exemple
+
+Soit la transformation 
+
+$$\Phi(\textbf{x}) = (x^2, \sqrt{2}xy, y^2).$$
+En appliquant cette transformation sur les données originales, on obtient un problème linéaire.
+
+## Autre exemple
+
+```{r}
+phi_data = function(x,y) {
+  return(c(x^2,sqrt(2)*x*y,y^2))
+}
+projected_data =numeric(600)
+for(index_to_project in 1:200){
+  point_to_project = circle_data[index_to_project,]
+  projected_point = phi_data(point_to_project[1],point_to_project[2])
+  
+  projected_data[(3*(index_to_project-1)+1):(3*(index_to_project))] = projected_point
+}
+projected_data = matrix(projected_data, nrow=200, ncol=3, byrow = TRUE)
+projected_data_as_dataframe = as.data.frame(projected_data)
+colnames(projected_data_as_dataframe) = c("x", "y", "z")
+plotly::plot_ly(projected_data_as_dataframe, x=~x, y=~y, z=~z, color=circle_class) %>%
+  add_markers() %>%
+  layout(scene = list(xaxis = list(title = 'x'),
+                      yaxis = list(title = 'y'),
+                      zaxis = list(title = 'x*y')))
+```
 
 ## Autre exemple
 
@@ -90,53 +119,120 @@ projected_data = matrix(projected_data, nrow=200, ncol=3, byrow = TRUE)
 projected_data_as_dataframe = as.data.frame(projected_data)
 colnames(projected_data_as_dataframe) = c("x", "y", "z")
 pca <- princomp(projected_data_as_dataframe)
-plot(pca$score[,1],pca$scores[,2], col=circle_class/2 + 5,main="Données transformées selon les composantes principales", xlab="Première composante principale", ylab="Deuxième composante principale")
+plot(pca$score[,1],pca$scores[,2], col=circle_class/2 + 5,main="Données transformées selon les composantes principales", xlab="Première composante principale", ylab="Deuxième composante principale", pch = 19)
 
 ```
 
-## Autre exemple
+## Projection dans un autre espace d'attributs 
 
-```{r}
-plotly::plot_ly(projected_data_as_dataframe, x=~x, y=~y, z=~z, color=circle_class) %>%
-  add_markers() %>%
-  layout(scene = list(xaxis = list(title = 'x'),
-                      yaxis = list(title = 'y'),
-                      zaxis = list(title = 'x*y')))
+-En général, on projète les données $\textbf{x}$ dans un espace d'attributs par une transformation non linéaire.
 
-```
+-Formellement, on a 
+
+\[
+\begin{aligned}
+\Phi: \mathbb{R}^N &\to \mathcal{F}\\
+\textbf{x} &\mapsto \Phi(\textbf{x})
+\end{aligned}
+\]
+
+- Cette technique est utilisée dans le contexte des SVM. 
+- Au lieu de faire l'apprentissage statistique sur $\textbf{x}_1, \textbf{x}_2, \dots, \textbf{x}_N$, on le fait sur $\Phi(\textbf{x}_1), \Phi(\textbf{x}_2), \dots, \Phi(\textbf{x}_N)$. 
+
+## Rappel de l'ACP
+
+Mathématiquement, les composantes principales sont obtenues selon une décomposition par valeurs et vecteurs propres de la matrice de covariances 
+
+$$ \frac{1}{N} \sum_{i = 1}^{N} \textbf{x}_i\textbf{x}_i^T.$$
+Correspond à la meilleure projection \textbf{linéaire} des données dans une dimension réduite.
+
+## ACP avec noyau
+
+On applique une ACP sur les données projetées. On décompose la matrice de covariances de la matrice des transformations non linéaires
+
+$$ \frac{1}{N} \sum_{i = 1}^{N} \Phi(\textbf{x}_i)\Phi(\textbf{x}_i)^T = \frac{1}{N} \sum_{i = 1}^{N} \Phi(\textbf{x}_i)\cdot \Phi(\textbf{x}_i).$$
+
+## Exemple de transformation 
+
+Pour une données à deux attributs $\textrm{x} = (x_1, x_2)$, on applique la transformation $\Phi(\textbf{x}) = (x_1^2, \sqrt{2}x_1x_2, x_2^2)$. Le produit scalaire devient
+
+\[
+\begin{aligned}
+(\Phi(\textbf{x}_i) \cdot \Phi(\textbf{x}_j)) &= (x_{i, 1}^2 + \sqrt{2} x_{i, 1} x_{i, 2} + x_{i, 2}^2)(x_{j, 1}^2 + \sqrt{2} x_{j, 1} x_{j, 2} + x_{j, 2}^2)^T\\
+&= ((x_{i, 1}x_{i, 2})(x_{j, 1}x_{j, 2})^T)^2\\
+&= (\textbf{x}_i \cdot \textbf{x}_j)^2.
+\end{aligned}
+\]
+
+On remarque qu'on n'a pas besoin de calculer les valeurs $x^2, \sqrt{2}xy$ ou $y^2$.
+
+## Exemple de transformation 2 
+
+Pour le polynome multinomial, on a 
+
+$$\Phi(\textrm{x}) = \sum_{\textbf{J} \in \{0, 1, \dots, N\}} w_{\textrm{J}}  \prod_{i = 1}^{k}x_{J_i}.$$
+Ce vecteur contient les données toutes les combinaisons polynomiales de dimension k. Par exemple, 
+
+$$x_1^k, x_2^k, \dots, x_p^k,$$
+$$x_1, x_1^2,\dots, x_1^{k-1}, x_1^{k},$$
+$$x_1^{k-1}x_2, x_1^{k-2}x_2^2, \dots, x_1 x_2^{k-1},$$
+$$x_1^{k-1}x_2, x_1^{k-1}x_3, \dots, x_1^{k-1}x_p$$
+
+## Exemple de transformation 2 
+
+La transformation produit des données dans une dimension$(p + 1)^k$. Par contre, on peut montrer que 
+
+$$\Phi(\textrm{x})\cdot \Phi(\textrm{y}) = (1 + \textrm{x}\cdot \textrm{y})^k.$$
+Cette équation se calcule en $O(N)$.
+
+## Exemple de transformation 3
+
+Soit la transformation 
+
+$$\Phi_k(\textrm{x}) = \frac{1}{\sqrt{k!}}e^{-\frac{||\textrm{x}||^2}{2}}\prod_{i = 1}^N\frac{x_{J_i}}{\sigma}    .$$
+
+On considère l'espace d'attributs de toutes les combinaisons de $\Phi_k(\textrm{x}), k\in \mathbb{N}$. 
+
+Alors, on a 
+
+$$\Phi(\textrm{x})\cdot \Phi(\textrm{y}) = e^{-\frac{||\textrm{x} - \textrm{y}||^2}{2\sigma^2}}$$
+
+On a seulement besoin de calculer une distance euclidienne, au lieu de calculer le produit scalaire entre deux vecteurs de dimension infini. 
+
+## Fonction noyau
+
+- Pour faire les calculs reliés à l'ACP avec noyau, on a seulement besoin du produit scalaire entre les données et non les données originales. 
+- $\Phi$ peut être une fonction non définie ou de dimension infinie, tant que son produit scalaire existe.
+- Soit $$k(\textrm{x}, \textrm{y}) = \Phi(\textrm{x})\cdot \Phi(\textrm{y}).$$
+Alors, on peut écrire la matrice de covariance de $\Phi$ comme
+
+$$\frac{1}{N} \sum_{i = 1}^{N} \Phi(\textbf{x}_i)\cdot \Phi(\textbf{x}_i) = \frac{1}{N} \sum_{i = 1}^{N} k(\textrm{x}, \textrm{x}).$$
 
 
-## Autre exemple
+## Normalisation des données
 
-```{r}
-plotly::plot_ly(projected_data_as_dataframe, x=~x, y=~y, z=~z, color=circle_class) %>%
-  add_markers() %>%
-  layout(scene = list(xaxis = list(title = 'x'),
-                      yaxis = list(title = 'y'),
-                      zaxis = list(title = 'x*y')))
-```
+- La formule $$\frac{1}{N} \sum_{i = 1}^{N} k(\textrm{x}, \textrm{x})$$ est valide si les données sont centrées, c-à-d que $$\sum_{i = 1}^{N} \Phi(\textrm{x}_i) = 0.$$
 
+- Si $\Phi(\textrm{x})$ est de dimension infinie, il est impossible de vérifier cette hypothèse. 
 
+- La solution est proposée par [@scholkopf1997kernel]
 
+## Normalisation des données 
 
+Soit $$K_{ij} = (k(\textbf{x}_i, \textbf{x}_j))_{ij} \textrm{ et } K,$$
 
+la matrice des $K_{ij}$. On a
 
+\begin{aligned}
+\tilde{k}(\textbf{x}_i, \textbf{x}_j) &= \tilde{\Phi}(\textbf{x}_i)^T\tilde{\Phi}(\textbf{x}_j)\\
+&= \left( \Phi(x_i) - \frac{1}{N}\sum_{l = 1}^{N}\Phi(\textbf{x}_l) \right)^T \left(\Phi(x_j) - \frac{1}{N}\sum_{l = 1}^{N}\Phi(\textbf{x}_l)\right)\\
+&= k(\textbf{x}_i, \textbf{x}_j) - \frac{1}{N}\sum_{l = 1}^{N}k(\textbf{x}_i, \textbf{x}_l) - \frac{1}{N}\sum_{l = 1}^{N}k(\textbf{x}_j, \textbf{x}_l) + \frac{1}{N^2} \sum_{l, k}^{N}k(\textbf{x}_l, \textbf{x}_k).
+\end{aligned}
 
-
-
-
-
-
-
-
+Alors, on peut centrer la matrice $\tilde{K}$ selon
 
 
+$$\tilde{K}_{ij} = K - 1_NK - K1_N + 1_NK1_N$$
 
-
-
-
-
-
-
-
+où $(1_N)_{ij} := \frac{1}{N}$ et éviter de calculer les données $\Phi(\textbf{x})$. 
 
