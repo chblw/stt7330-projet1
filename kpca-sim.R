@@ -1,4 +1,4 @@
-library(kernlab)
+xlibrary(kernlab)
 library(readr)
 library(dplyr)
 library(plotly)
@@ -35,8 +35,8 @@ plotly::plot_ly(projected_data_as_dataframe, x=~x, y=~y, z=~z, color=circle_clas
                       yaxis = list(title = 'y'),
                       zaxis = list(title = 'x*y')))
 
-kerneled_data = (circle_data[,1] * circle_data[,2] +1)^2
-plot(cbind(rep(1,200),kerneled_data), col=circle_class, ylab="Valeur de la fonction noyau", main="Nouvelle position en utilisant l'information polynomiale")
+kerneled_data =(circle_data[,1] * circle_data[,2])^2
+plot(cbind(kerneled_data, rep(1,200)), col=circle_class, xlab="Log-valeur du noyau", yaxt="n" , main="Valeur de la fonction noyau polynomial", log="x")
 
 kpc_rbf <- kpca(circle_data, kernel = "rbfdot", kpar = list(sigma = 0.05), features = 2)
 kpc_bessel <- kpca(circle_data, kernel = "besseldot", kpar = list(sigma = 0.6, order = 3), features = 2)
