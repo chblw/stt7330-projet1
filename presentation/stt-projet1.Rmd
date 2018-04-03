@@ -12,6 +12,7 @@ library(kernlab)
 library(plotly)
 library(readr)
 library(dplyr)
+set.seed(1337)
 ```
 
 ## Plan
@@ -139,20 +140,16 @@ plot(pca$score[,1],pca$scores[,2], col=circle_class/2 + 5,main="Données transfo
 - Cette technique est utilisée dans le contexte des SVM. 
 - Au lieu de faire l'apprentissage statistique sur $\textbf{x}_1, \textbf{x}_2, \dots, \textbf{x}_N$, on le fait sur $\Phi(\textbf{x}_1), \Phi(\textbf{x}_2), \dots, \Phi(\textbf{x}_N)$. 
 
-## Rappel de l'ACP
+## Fonction noyau
 
-Mathématiquement, les composantes principales sont obtenues selon une décomposition par valeurs et vecteurs propres de la matrice de covariances 
+- Pour faire les calculs reliés à l'ACP avec noyau, on a seulement besoin du produit scalaire entre les données et non les données originales. 
+- $\Phi$ peut être une fonction non définie ou de dimension infinie, tant que son produit scalaire existe.
+- Soit $$k(\textrm{x}, \textrm{y}) = \Phi(\textrm{x})\cdot \Phi(\textrm{y}).$$
+Alors, on peut écrire la matrice de covariance de $\Phi$ comme
 
-$$ \frac{1}{N} \sum_{i = 1}^{N} \textbf{x}_i\textbf{x}_i^T.$$
-Correspond à la meilleure projection \textbf{linéaire} des données dans une dimension réduite.
+$$\frac{1}{N} \sum_{i = 1}^{N} \Phi(\textbf{x}_i)\cdot \Phi(\textbf{x}_i) = \frac{1}{N} \sum_{i = 1}^{N} k(\textrm{x}, \textrm{x}).$$
 
-## ACP avec noyau
-
-On applique une ACP sur les données projetées. On décompose la matrice de covariances de la matrice des transformations non linéaires
-
-$$ \frac{1}{N} \sum_{i = 1}^{N} \Phi(\textbf{x}_i)\Phi(\textbf{x}_i)^T = \frac{1}{N} \sum_{i = 1}^{N} \Phi(\textbf{x}_i)\cdot \Phi(\textbf{x}_i).$$
-
-## Exemple de transformation 
+## Transformation quadratique
 
 Pour une données à deux attributs $\textrm{x} = (x_1, x_2)$, on applique la transformation $\Phi(\textbf{x}) = (x_1^2, \sqrt{2}x_1x_2, x_2^2)$. Le produit scalaire devient
 
@@ -166,7 +163,7 @@ Pour une données à deux attributs $\textrm{x} = (x_1, x_2)$, on applique la tr
 
 On remarque qu'on n'a pas besoin de calculer les valeurs $x^2, \sqrt{2}xy$ ou $y^2$.
 
-## Exemple de transformation 2 
+## Transformation polynomiale
 
 Pour le polynome multinomial, on a 
 
@@ -178,14 +175,14 @@ $$x_1, x_1^2,\dots, x_1^{k-1}, x_1^{k},$$
 $$x_1^{k-1}x_2, x_1^{k-2}x_2^2, \dots, x_1 x_2^{k-1},$$
 $$x_1^{k-1}x_2, x_1^{k-1}x_3, \dots, x_1^{k-1}x_p$$
 
-## Exemple de transformation 2 
+## Transformation polynomiale
 
 La transformation produit des données dans une dimension$(p + 1)^k$. Par contre, on peut montrer que 
 
 $$\Phi(\textrm{x})\cdot \Phi(\textrm{y}) = (1 + \textrm{x}\cdot \textrm{y})^k.$$
 Cette équation se calcule en $O(N)$.
 
-## Exemple de transformation 3
+## Transformation gaussienne
 
 Soit la transformation 
 
@@ -199,14 +196,6 @@ $$\Phi(\textrm{x})\cdot \Phi(\textrm{y}) = e^{-\frac{||\textrm{x} - \textrm{y}||
 
 On a seulement besoin de calculer une distance euclidienne, au lieu de calculer le produit scalaire entre deux vecteurs de dimension infini. 
 
-## Fonction noyau
-
-- Pour faire les calculs reliés à l'ACP avec noyau, on a seulement besoin du produit scalaire entre les données et non les données originales. 
-- $\Phi$ peut être une fonction non définie ou de dimension infinie, tant que son produit scalaire existe.
-- Soit $$k(\textrm{x}, \textrm{y}) = \Phi(\textrm{x})\cdot \Phi(\textrm{y}).$$
-Alors, on peut écrire la matrice de covariance de $\Phi$ comme
-
-$$\frac{1}{N} \sum_{i = 1}^{N} \Phi(\textbf{x}_i)\cdot \Phi(\textbf{x}_i) = \frac{1}{N} \sum_{i = 1}^{N} k(\textrm{x}, \textrm{x}).$$
 
 
 ## Normalisation des données
@@ -236,3 +225,27 @@ $$\tilde{K}_{ij} = K - 1_NK - K1_N + 1_NK1_N$$
 
 où $(1_N)_{ij} := \frac{1}{N}$ et éviter de calculer les données $\Phi(\textbf{x})$. 
 
+## Rappel de l'ACP
+
+Mathématiquement, les composantes principales sont obtenues selon une décomposition par valeurs et vecteurs propres de la matrice de covariances 
+
+$$ \frac{1}{N} \sum_{i = 1}^{N} \textbf{x}_i\textbf{x}_i^T.$$
+Correspond à la meilleure projection \textbf{linéaire} des données dans une dimension réduite.
+
+## ACP avec noyau
+
+On applique une ACP sur les données projetées. On décompose la matrice de covariances de la matrice des transformations non linéaires
+
+$$ \frac{1}{N} \sum_{i = 1}^{N} \Phi(\textbf{x}_i)\Phi(\textbf{x}_i)^T = \frac{1}{N} \sum_{i = 1}^{N} \Phi(\textbf{x}_i)\cdot \Phi(\textbf{x}_i).$$
+
+Mettre la matrice C modifiee pour les kernel a place du dot product .
+
+## Lien avec le SVM
+
+## Applications MNIST
+
+## Discussion
+### Avantages
+### Desavantages
+
+## References
