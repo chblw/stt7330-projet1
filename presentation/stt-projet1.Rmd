@@ -12,6 +12,7 @@ library(kernlab)
 library(plotly)
 library(readr)
 library(dplyr)
+set.seed(1337)
 ```
 
 ## Plan
@@ -24,9 +25,9 @@ library(dplyr)
 
 ## Motivation
 
-- L'analyse par composantes principales est la meilleure projection linéaire dans un espace réduit qui permet de conserver le maximum de la variance dans les premières composantes. 
-
-- L'objectif de l'analyse par composantes principales avec noyau est de généraliser l'ACP pour incorporer des relations non linéaires entre les données. 
+- L'ACP reduit la dimentionnalite tout en conservant le maximum de variance dans les données.
+- Premières composante les plus informatives.
+- Information non linéaire pas facile à capturer
 
 ## Exemple 
 
@@ -231,8 +232,15 @@ la matrice des $K_{ij}$. On a
 
 Alors, on peut centrer la matrice $\tilde{K}$ selon
 
-
 $$\tilde{K}_{ij} = K - 1_NK - K1_N + 1_NK1_N$$
 
 où $(1_N)_{ij} := \frac{1}{N}$ et éviter de calculer les données $\Phi(\textbf{x})$. 
+
+## Discussion
+
+### Avantages
+- Découvrir les relations non linéaires entre les données
+### Incovénients
+- Ajuster les hyper-paramètres
+- Perte de l'interprétabilité des premières composantes principales
 
