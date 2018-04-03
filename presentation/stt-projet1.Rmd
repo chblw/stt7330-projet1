@@ -3,7 +3,9 @@ title: "ACP avec noyau"
 author: "Jean-Thomas Baillargeon et Christopher Blier-Wong"
 date: "4 avril 2018"
 bibliography: ref.bib
-output: ioslides_presentation
+output: 
+  revealjs::revealjs_presentation:
+    theme: moon
 ---
 
 ```{r setup, include=FALSE}
