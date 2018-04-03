@@ -47,7 +47,9 @@ L'idée de l'espace des attributs est de projeter les données originales par un
 \textbf{x} &\mapsto \Phi(\textbf{x}) 
 \end{align}
 
-où les données $\textbf{x}_1, \textbf{x}_2. \dots, \textbf{x}_N \in \mathbb{R}^p$ sont projetées vers un espace d'attributs $\mathcal{F}$ \cite{muller2001introduction}. Souvent, la dimension de $\mathcal{F}$ est beaucoup plus élevée que $p$. L'apprentissage statistique peut maintenant être fait sur les données $$(\Phi(\textbf{x}_1), y_1), (\Phi(\textbf{x}_2), y_2), \dots, (\Phi(\textbf{x}_n), y_n).$$
+où les données $\textbf{x}_1, \textbf{x}_2. \dots, \textbf{x}_N \in \mathbb{R}^p$ sont projetées vers un espace d'attributs 
+$\mathcal{F}$ \cite{muller2001introduction}. Souvent, la dimension de $\mathcal{F}$ est beaucoup plus élevée que $p$. Dans un cas où ces données sont utilisées pour l'apprentissage statistiques, 
+le jeu de données à utiliser devient $$(\Phi(\textbf{x}_1), y_1), (\Phi(\textbf{x}_2), y_2), \dots, (\Phi(\textbf{x}_n), y_n).$$
 
 Afin de motiver cette généralisation du modèle, considérons l'exemple précédent, avec le jeu de données précédent, où
 $$\textbf{x}_1, \textbf{x}_2, \dots, \textbf{x}_N = (x_{1,1},x_{1,2}), (x_{2,1}, x_{2,2}), …, (x_{N,1}, x_{N,2})$$
