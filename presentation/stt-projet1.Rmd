@@ -140,14 +140,7 @@ plot(pca$score[,1],pca$scores[,2], col=circle_class/2 + 5,main="Données transfo
 - Cette technique est utilisée dans le contexte des SVM. 
 - Au lieu de faire l'apprentissage statistique sur $\textbf{x}_1, \textbf{x}_2, \dots, \textbf{x}_N$, on le fait sur $\Phi(\textbf{x}_1), \Phi(\textbf{x}_2), \dots, \Phi(\textbf{x}_N)$. 
 
-## Fonction noyau
 
-- Pour faire les calculs reliés à l'ACP avec noyau, on a seulement besoin du produit scalaire entre les données et non les données originales. 
-- $\Phi$ peut être une fonction non définie ou de dimension infinie, tant que son produit scalaire existe.
-- Soit $$k(\textrm{x}, \textrm{y}) = \Phi(\textrm{x})\cdot \Phi(\textrm{y}).$$
-Alors, on peut écrire la matrice de covariance de $\Phi$ comme
-
-$$\frac{1}{N} \sum_{i = 1}^{N} \Phi(\textbf{x}_i)\cdot \Phi(\textbf{x}_i) = \frac{1}{N} \sum_{i = 1}^{N} k(\textrm{x}, \textrm{x}).$$
 
 ## Transformation quadratique
 
@@ -197,16 +190,37 @@ $$\Phi(\textrm{x})\cdot \Phi(\textrm{y}) = e^{-\frac{||\textrm{x} - \textrm{y}||
 On a seulement besoin de calculer une distance euclidienne, au lieu de calculer le produit scalaire entre deux vecteurs de dimension infini. 
 
 
+## Fonction noyau
+
+
+- Pour faire les calculs reliés à l'ACP avec noyau, on a seulement besoin du produit scalaire entre les données et non les données originales. 
+- $\Phi$ peut être une fonction non définie ou de dimension infinie, tant que son produit scalaire existe.
+- Soit $$k(\textrm{x}, \textrm{y}) = \Phi(\textrm{x})\cdot \Phi(\textrm{y}).$$
+Alors, on peut écrire la matrice de covariance de $\Phi$ comme
+
+On applique une ACP sur les données projetées [@scholkopf1997kernel]. On décompose la matrice de covariances de la matrice des transformations non linéaires
+
+$$\frac{1}{N} \sum_{i = 1}^{N} \Phi(\textbf{x}_i)\cdot \Phi(\textbf{x}_i) = \frac{1}{N} \sum_{i = 1}^{N} k(\textrm{x}, \textrm{x}).$$
+
+## Fonction noyau
+
+- Pour faire les calculs reliés à l'ACP avec noyau, on a seulement besoin du produit scalaire entre les données et non les données originales. 
+- $\Phi$ peut être une fonction non définie ou de dimension infinie, tant que son produit scalaire existe.
+- Soit $$\textrm{k}(\textrm{x}, \textrm{y}) = \Phi(\textrm{x})\cdot \Phi(\textrm{y}).$$
+Alors, on peut écrire la matrice de covariance de $\Phi$ comme
+
+$$\frac{1}{N} \sum_{i = 1}^{N} \Phi(\textbf{x}_i)\cdot \Phi(\textbf{x}_i) = \frac{1}{N} \sum_{i = 1}^{N} \textrm{k}(\textrm{x}, \textrm{x}).$$
+
 
 ## Normalisation des données
 
-- La formule $$\frac{1}{N} \sum_{i = 1}^{N} k(\textrm{x}, \textrm{x})$$ est valide si les données sont centrées, c-à-d que $$\sum_{i = 1}^{N} \Phi(\textrm{x}_i) = 0.$$
+- La formule $$\frac{1}{N} \sum_{i = 1}^{N} \textrm{k}(\textrm{x}, \textrm{x})$$ est valide si les données sont centrées, c-à-d que $$\sum_{i = 1}^{N} \Phi(\textrm{x}_i) = 0.$$
 
 - Si $\Phi(\textrm{x})$ est de dimension infinie, il est impossible de vérifier cette hypothèse. 
 
-- La solution est proposée par [@scholkopf1997kernel]
-
 ## Normalisation des données 
+
+La solution est proposée par [@scholkopf1997kernel]
 
 Soit $$K_{ij} = (k(\textbf{x}_i, \textbf{x}_j))_{ij} \textrm{ et } K,$$
 
@@ -240,16 +254,67 @@ $$ \frac{1}{N} \sum_{i = 1}^{N} \Phi(\textbf{x}_i)\Phi(\textbf{x}_i)^T = \frac{1
 Mettre la matrice C modifiee pour les kernel a place du dot product .
 
 ## Lien avec le SVM
-
+ 	 
 ## Applications MNIST
+ 	 
+On applique l'ACP avec noyau sur le jeu de données MNIST [@lecun1998gradient].
+```{r, eval = FALSE}
+library(readr)
+
+set.seed(25032018)
+
+mnist_raw <- read_csv("https://pjreddie.com/media/files/mnist_train.csv", col_names = FALSE)
+
+instances_to_use <- 2000
+
+mnist_data <- mnist_raw[1:instances_to_use, -1]
+mnist_label <- mnist_raw[1:instances_to_use, 1] %>% unlist %>% as.vector + 1
+par(mfrow = c(1, 4))
+for(i in 1:4) {
+  mat <- matrix(mnist_data[i, ], 28, 28, byrow = TRUE)
+  mat <- apply(mat, 1, rev)
+  mat <- apply(mat, 2, rev)
+  mat <- apply(mat, 1, rev)
+  image(t(mat), col = gray((0:255)/255))
+}
+```
+
+
+##  Applications MNIST
+
+```{r, eval = FALSE}
+kpc_rbf1 <- kpca(mnist_data, kernel = "rbfdot", kpar = list(sigma = 0.0000004), features = 2)
+kpc_rbf2 <- kpca(mnist_data, kernel = "rbfdot", kpar = list(sigma = 0.000005), features = 2)
+kpc_bessel <- kpca(mnist_data, kernel = "besseldot", kpar = list(sigma = 0.01, order = 10), features = 2)
+kpc_tanh <- kpca(mnist_data, kernel = "tanhdot", kpar = list(scale = 0.000005), features = 2)
+kpc_poly <- kpca(mnist_data, kernel = "polydot", kpar = list(degree = 3), features = 2)
+
+par(mfrow = c(2, 3))
+
+pc <- prcomp(mnist_data, rank. = 2)
+
+plot(pc$x %*% matrix(c(-1, 0, 0, -1), 2), col = mnist_label, pch = 19, main = "pca", xlab = "CP1", ylab = "CP2")
+plot(rotated(kpc_rbf1), col = mnist_label, pch = 19, main = "kpca rbf 1", xlab = "CP1", ylab = "CP2")
+plot(rotated(kpc_rbf2), col = mnist_label, pch = 19, main = "kpca rbf 2", xlab = "CP1", ylab = "CP2")
+plot(rotated(kpc_bessel), col = mnist_label, pch = 19, main = "kpca Bessel", xlab = "CP1", ylab = "CP2")
+plot(rotated(kpc_tanh), col = mnist_label, pch = 19, main = "kpca tanh", xlab = "CP1", ylab = "CP2")
+plot(rotated(kpc_poly), col = mnist_label, pch = 19, main = "kpca polynomial", xlab = "CP1", ylab = "CP2")
+```
+
 ## Discussion
 
 ### Avantages
 - Découvrir les relations non linéaires entre les données
+- Possiblement réduire davantage la dimension 
+- Noyau = truc utile lorsque seulement le produit scalaire est requis
+- Succès dans détection de visages [@kim2002face]
+
+
 ### Incovénients
 - Ajuster les hyper-paramètres
-- Perte de l'interprétabilité des premières composantes principales
+- Non-supervisé : l'ajustement des hyper-paramètres peur être compliqué
+- Perte de l'interprétabilité linéaire des premières composantes principales
+- Ne permet pas de reconstruire les données
 
 
 ## References
->>>>>>> modifications_presentation_a_merged
