@@ -27,7 +27,7 @@ set.seed(1337)
 
 ## Motivation
 
-- L'ACP reduit la dimentionnalite tout en conservant le maximum de variance dans les données.
+- L'ACP reduit la dimention tout en conservant le maximum de variance dans les données.
 - Premières composante les plus informatives.
 - Information non linéaire pas facile à capturer
 
@@ -139,7 +139,6 @@ plot(pca$score[,1],pca$scores[,2], col=circle_class/2 + 5,main="Données transfo
 \end{aligned}
 \]
 
-- Cette technique est utilisée dans le contexte des SVM. 
 - Au lieu de faire l'apprentissage statistique sur $\textbf{x}_1, \textbf{x}_2, \dots, \textbf{x}_N$, on le fait sur $\Phi(\textbf{x}_1), \Phi(\textbf{x}_2), \dots, \Phi(\textbf{x}_N)$. 
 
 
@@ -195,24 +194,12 @@ On a seulement besoin de calculer une distance euclidienne, au lieu de calculer 
 ## Fonction noyau
 
 
-- Pour faire les calculs reliés à l'ACP avec noyau, on a seulement besoin du produit scalaire entre les données et non les données originales. 
+- Pour l'ACP avec noyau, on a seulement besoin du produit scalaire
 - $\Phi$ peut être une fonction non définie ou de dimension infinie, tant que son produit scalaire existe.
 - Soit $$k(\textrm{x}, \textrm{y}) = \Phi(\textrm{x})\cdot \Phi(\textrm{y}).$$
 Alors, on peut écrire la matrice de covariance de $\Phi$ comme
 
-On applique une ACP sur les données projetées [@scholkopf1997kernel]. On décompose la matrice de covariances de la matrice des transformations non linéaires
-
-$$\frac{1}{N} \sum_{i = 1}^{N} \Phi(\textbf{x}_i)\cdot \Phi(\textbf{x}_i) = \frac{1}{N} \sum_{i = 1}^{N} k(\textrm{x}, \textrm{x}).$$
-
-## Fonction noyau
-
-- Pour faire les calculs reliés à l'ACP avec noyau, on a seulement besoin du produit scalaire entre les données et non les données originales. 
-- $\Phi$ peut être une fonction non définie ou de dimension infinie, tant que son produit scalaire existe.
-- Soit $$\textrm{k}(\textrm{x}, \textrm{y}) = \Phi(\textrm{x})\cdot \Phi(\textrm{y}).$$
-Alors, on peut écrire la matrice de covariance de $\Phi$ comme
-
-$$\frac{1}{N} \sum_{i = 1}^{N} \Phi(\textbf{x}_i)\cdot \Phi(\textbf{x}_i) = \frac{1}{N} \sum_{i = 1}^{N} \textrm{k}(\textrm{x}, \textrm{x}).$$
-
+$$\frac{1}{N} \sum_{i = 1}^{N} \Phi(\textbf{x}_i)\cdot \Phi(\textbf{x}_i) = \frac{1}{N} \sum_{i = 1}^{N} k(\textrm{x}_i, \textrm{x}_i).$$
 
 ## Normalisation des données
 
@@ -226,15 +213,7 @@ La solution est proposée par [@scholkopf1997kernel]
 
 Soit $$K_{ij} = (k(\textbf{x}_i, \textbf{x}_j))_{ij} \textrm{ et } K,$$
 
-la matrice des $K_{ij}$. On a
-
-\begin{aligned}
-\tilde{k}(\textbf{x}_i, \textbf{x}_j) &= \tilde{\Phi}(\textbf{x}_i)^T\tilde{\Phi}(\textbf{x}_j)\\
-&= \left( \Phi(x_i) - \frac{1}{N}\sum_{l = 1}^{N}\Phi(\textbf{x}_l) \right)^T \left(\Phi(x_j) - \frac{1}{N}\sum_{l = 1}^{N}\Phi(\textbf{x}_l)\right)\\
-&= k(\textbf{x}_i, \textbf{x}_j) - \frac{1}{N}\sum_{l = 1}^{N}k(\textbf{x}_i, \textbf{x}_l) - \frac{1}{N}\sum_{l = 1}^{N}k(\textbf{x}_j, \textbf{x}_l) + \frac{1}{N^2} \sum_{l, k}^{N}k(\textbf{x}_l, \textbf{x}_k).
-\end{aligned}
-
-Alors, on peut centrer la matrice $\tilde{K}$ selon
+la matrice des $K_{ij}$. Alors, on peut centrer la matrice $\tilde{K}$ selon
 
 $$\tilde{K}_{ij} = K - 1_NK - K1_N + 1_NK1_N$$
 
@@ -249,18 +228,40 @@ Correspond à la meilleure projection \textbf{linéaire} des données dans une d
 
 ## ACP avec noyau
 
-On applique une ACP sur les données projetées. On décompose la matrice de covariances de la matrice des transformations non linéaires
+On applique une ACP sur les données projetées [@scholkopf1997kernel]. On décompose la matrice de covariances de la matrice des transformations non linéaires
 
-$$ \frac{1}{N} \sum_{i = 1}^{N} \Phi(\textbf{x}_i)\Phi(\textbf{x}_i)^T = \frac{1}{N} \sum_{i = 1}^{N} \Phi(\textbf{x}_i)\cdot \Phi(\textbf{x}_i).$$
-
-Mettre la matrice C modifiee pour les kernel a place du dot product .
+$$ \frac{1}{N} \sum_{i = 1}^{N} \Phi(\textbf{x}_i)\Phi(\textbf{x}_i)^T = \frac{1}{N} \sum_{i = 1}^{N} \textrm{k}(\textrm{x}_i, \textrm{x}_i) .$$
 
 ## Lien avec le SVM
+Rappel : On veut maximiser $M$ tel que 
+$$y_i(\beta_0 + \beta_1 x_{i1} \dots + \beta_p x_{ip}) \geq M(1 - \varepsilon_i) ~ \forall ~ i = 1, \dots, n$$
+sous les contraintes 
+\[
+\begin{aligned}
+\sum_{j= 0}^p\beta_j^2 &= 1\\
+\varepsilon_i &\geq 0 ~\forall~i\\
+\sum_{i = 1}^n\varepsilon_i &\leq c
+\end{aligned}
+\]
  	 
+## Classifieur à vecteurs de support : formulation duale avec marges douces
+ 	 
+Avec les multiplicateurs de Lagrange, la fonction à maximiser devient
+
+$$-\frac{1}{2} \sum_{t = 1}^n\sum_{s = 1}^n \alpha_t\alpha_s r_tr_s\textbf{x}_t\textbf{x}_s^T + \sum_{t = 1}^n \alpha_t$$
+sous les contraintes 
+
+\[
+ 	 \begin{aligned}
+ 	 \sum_{t= 1}^n\alpha_tr_t &= 0\\
+ 	 0\leq \alpha_i &\leq c ~\forall~i\\
+ 	 \end{aligned}
+\]
+
 ## Applications MNIST
  	 
 On applique l'ACP avec noyau sur le jeu de données MNIST [@lecun1998gradient].
-```{r, eval = FALSE}
+```{r, echo=FALSE, show = FALSE, fig.show=TRUE, show = FALSE, message = FALSE}
 library(readr)
 
 set.seed(25032018)
@@ -269,7 +270,7 @@ mnist_raw <- read_csv("https://pjreddie.com/media/files/mnist_train.csv", col_na
 
 instances_to_use <- 2000
 
-mnist_data <- mnist_raw[1:instances_to_use, -1]
+mnist_data <- mnist_raw[1:instances_to_use, -1] %>% as.matrix
 mnist_label <- mnist_raw[1:instances_to_use, 1] %>% unlist %>% as.vector + 1
 par(mfrow = c(1, 4))
 for(i in 1:4) {
@@ -284,7 +285,7 @@ for(i in 1:4) {
 
 ##  Applications MNIST
 
-```{r, eval = FALSE}
+```{r}
 kpc_rbf1 <- kpca(mnist_data, kernel = "rbfdot", kpar = list(sigma = 0.0000004), features = 2)
 kpc_rbf2 <- kpca(mnist_data, kernel = "rbfdot", kpar = list(sigma = 0.000005), features = 2)
 kpc_bessel <- kpca(mnist_data, kernel = "besseldot", kpar = list(sigma = 0.01, order = 10), features = 2)
@@ -311,6 +312,7 @@ plot(rotated(kpc_poly), col = mnist_label, pch = 19, main = "kpca polynomial", x
 - Noyau = truc utile lorsque seulement le produit scalaire est requis
 - Succès dans détection de visages [@kim2002face]
 
+## Discussion
 
 ### Incovénients
 - Ajuster les hyper-paramètres
@@ -318,5 +320,4 @@ plot(rotated(kpc_poly), col = mnist_label, pch = 19, main = "kpca polynomial", x
 - Perte de l'interprétabilité linéaire des premières composantes principales
 - Ne permet pas de reconstruire les données
 
-
-## References
+## Références
