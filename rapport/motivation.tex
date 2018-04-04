@@ -10,7 +10,7 @@ Mathématiquement, l’ACP s'exécute en décomposant la matrice de variance-cov
 
 $$C = Var(X) = \frac{1}{N} \sum_{i = 1}^{N}   \textbf{x}_i\textbf{x}_i^{T} = \frac{1}{N} \sum_{i = 1}^{N}   \textbf{x}_i \cdot \textbf{x}_i$$
 
-La principale limitation de cette méthodologie est qu’elle ne permet pas d’exploiter l’information contenue dans les interactions non linéaires entre les attributs. De plus, les composantes principales sont indépendantes les unes entres elles de telle sorte que l'information non linéaire peut réapparaitre dans les données en conservant un grand nombre de composantes principales. \\
+La principale limitation de cette méthodologie est qu’elle ne permet pas d’exploiter l’information contenue dans les interactions non linéaires entre les attributs. De plus, les composantes principales sont indépendantes les unes entres elles de telle sorte que l'information non linéaire peut réapparaître dans les données en conservant un grand nombre de composantes principales. \\
 
 Par exemple, les données dans la figure suivante n'ont aucune de relation linéaire. 
 
@@ -47,7 +47,7 @@ L'idée de l'espace des attributs est de projeter les données originales par un
 \textbf{x} &\mapsto \Phi(\textbf{x}) 
 \end{align}
 
-où les données $\textbf{x}_1, \textbf{x}_2. \dots, \textbf{x}_N \in \mathbb{R}^p$ sont projetées vers un espace d'attributs $\mathcal{F}$ \cite{muller2001introduction}. Souvent, la dimension de $\mathcal{F}$ est beaucoup plus élevée que $p$. Dans un cas plus concret, où les données sont utilisées pour entrainer un modèle, l'apprentissage statistique se fait sur les données $$(\Phi(\textbf{x}_1), y_1), (\Phi(\textbf{x}_2), y_2), \dots, (\Phi(\textbf{x}_n), y_n).$$
+où les données $\textbf{x}_1, \textbf{x}_2. \dots, \textbf{x}_N \in \mathbb{R}^p$ sont projetées vers un espace d'attributs $\mathcal{F}$ \cite{muller2001introduction}. Souvent, la dimension de $\mathcal{F}$ est beaucoup plus élevée que $p$. Dans un cas plus concret, où les données sont utilisées pour entraîner un modèle, l'apprentissage statistique se fait sur les données $$(\Phi(\textbf{x}_1), y_1), (\Phi(\textbf{x}_2), y_2), \dots, (\Phi(\textbf{x}_n), y_n).$$
 
 Afin de motiver cette généralisation du modèle, considérons l'exemple précédent, avec le jeu de données précédent, où
 $$\textbf{x}_1, \textbf{x}_2, \dots, \textbf{x}_N = (x_{1,1},x_{1,2}), (x_{2,1}, x_{2,2}), …, (x_{N,1}, x_{N,2})$$

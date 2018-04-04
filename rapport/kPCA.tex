@@ -1,12 +1,12 @@
 \section{ACP avec noyau}
 
-Dans le contexte de l'ACP, on trouvait les valeurs et vecteurs propres qui correspondaient à la matrice de covariance. Si les données sont centrées, c-à-d $\sum_{i = 1}^{N}x_i = 0$, on a 
+Dans le contexte de l'ACP, on trouvait les valeurs et vecteurs propres qui correspondaient à la matrice de covariance. Si les données sont centrées, c.-à-d. $\sum_{i = 1}^{N}x_i = 0$, on a 
 
 \begin{equation*}
 C = Var(X) = \frac{1}{N} \sum_{i = 1}^N \textbf{x}_i \textbf{x}_i^T.
 \end{equation*}
 
-\cite{scholkopf1997kernel} proposent de répéter cette analyse sur une transformation des données originales, c-à-d trouver les valeurs et vecteurs propres de
+\cite{scholkopf1997kernel} proposent de répéter cette analyse sur une transformation des données originales, c.-à-d. trouver les valeurs et vecteurs propres de
 
 \begin{equation}\label{eq:covkernel}
 \overline{C} = \frac{1}{N} \sum_{i = 1}^{N} \Phi(\textbf{x}_i)\Phi(\textbf{x}_i)^T.
@@ -20,7 +20,7 @@ Ensuite, en appliquant le "truc du noyau" présenté dans la section (\ref{sec:k
 
 \subsection{Normalisation des données}
 
-Dans le développement de l'ACP, on a appliqué l'hypothèse que les données étaient centrées. Par contre, dans le contexte de projection des données dans l'espace $\mathcal{F}$ et pour profiter du truc du noyau, on ne peut pas calculer $$\tilde{\Phi}(\textbf{x}_i) = \Phi(\textbf{x}_i) - \frac{1}{N}\sum_{i = 1}^{N}\Phi(\textbf{x}_i).$$ La solution à ce problème est présenté dans \cite{scholkopf1998nonlinear}. Soit la matrice $K$, où 
+Dans le développement de l'ACP, on a appliqué l'hypothèse que les données étaient centrées. Par contre, dans le contexte de projection des données dans l'espace $\mathcal{F}$ et pour profiter du truc du noyau, on ne peut pas calculer $$\tilde{\Phi}(\textbf{x}_i) = \Phi(\textbf{x}_i) - \frac{1}{N}\sum_{i = 1}^{N}\Phi(\textbf{x}_i).$$ La solution à ce problème est présentée dans \cite{scholkopf1998nonlinear}. Soit la matrice $K$, où 
 $$K_{ij} = (k(\textbf{x}_i, \textbf{x}_j))_{ij}.$$
 
 Il est possible que $\frac{1}{N} \sum_{i = 1}^{N} \Phi(\textbf{x}) \neq 0$. On doit alors centrer les données selon le développent suivant : 
