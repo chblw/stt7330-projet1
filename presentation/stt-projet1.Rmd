@@ -20,8 +20,8 @@ set.seed(1337)
 ## Plan
 
 - Motivation
-- Fonction noyau
 - ACP avec noyau
+- Fonction noyau
 - Application pratique 
 - Discussion
 
@@ -126,6 +126,36 @@ plot(pca$score[,1],pca$scores[,2], col=circle_class/2 + 5,main="Données transfo
 
 ```
 
+
+## Rappel de l'ACP
+
+Mathématiquement, les composantes principales sont obtenues selon une décomposition par valeurs et vecteurs propres de la matrice de covariances 
+
+$$ \frac{1}{N} \sum_{i = 1}^{N} \textbf{x}_i\textbf{x}_i^T.$$
+Correspond à la meilleure projection \textbf{linéaire} des données dans une dimension réduite.
+
+
+## ACP avec noyau
+
+On applique une ACP sur les données projetées [@scholkopf1997kernel]. On décompose la matrice de covariances de la matrice des transformations non linéaires
+
+$$ \frac{1}{N} \sum_{i = 1}^{N} \Phi(\textbf{x}_i)\Phi(\textbf{x}_i)^T = \frac{1}{N} \sum_{i = 1}^{N} \textrm{k}(\textrm{x}_i, \textrm{x}_i) .$$
+
+
+## Transformation quadratique
+
+Pour une données à deux attributs $\textrm{x} = (x_1, x_2)$, on applique la transformation $\Phi(\textbf{x}) = (x_1^2, \sqrt{2}x_1x_2, x_2^2)$. Le produit scalaire devient
+
+\[
+\begin{aligned}
+(\Phi(\textbf{x}_i) \cdot \Phi(\textbf{x}_j)) &= (x_{i, 1}^2 + \sqrt{2} x_{i, 1} x_{i, 2} + x_{i, 2}^2)(x_{j, 1}^2 + \sqrt{2} x_{j, 1} x_{j, 2} + x_{j, 2}^2)^T\\
+&= ((x_{i, 1}x_{i, 2})(x_{j, 1}x_{j, 2})^T)^2\\
+&= (\textbf{x}_i \cdot \textbf{x}_j)^2.
+\end{aligned}
+\]
+
+On remarque qu'on n'a pas besoin de calculer les valeurs $x^2, \sqrt{2}xy$ ou $y^2$.
+
 ## Projection dans un autre espace d'attributs 
 
 -En général, on projète les données $\textbf{x}$ dans un espace d'attributs par une transformation non linéaire.
@@ -143,19 +173,17 @@ plot(pca$score[,1],pca$scores[,2], col=circle_class/2 + 5,main="Données transfo
 
 
 
-## Transformation quadratique
+## Fonction noyau
 
-Pour une données à deux attributs $\textrm{x} = (x_1, x_2)$, on applique la transformation $\Phi(\textbf{x}) = (x_1^2, \sqrt{2}x_1x_2, x_2^2)$. Le produit scalaire devient
 
-\[
-\begin{aligned}
-(\Phi(\textbf{x}_i) \cdot \Phi(\textbf{x}_j)) &= (x_{i, 1}^2 + \sqrt{2} x_{i, 1} x_{i, 2} + x_{i, 2}^2)(x_{j, 1}^2 + \sqrt{2} x_{j, 1} x_{j, 2} + x_{j, 2}^2)^T\\
-&= ((x_{i, 1}x_{i, 2})(x_{j, 1}x_{j, 2})^T)^2\\
-&= (\textbf{x}_i \cdot \textbf{x}_j)^2.
-\end{aligned}
-\]
+- Pour l'ACP avec noyau, on a seulement besoin du produit scalaire
+- $\Phi$ peut être une fonction non définie ou de dimension infinie, tant que son produit scalaire existe.
+- Soit $$k(\textrm{x}, \textrm{y}) = \Phi(\textrm{x})\cdot \Phi(\textrm{y}).$$
+Alors, on peut écrire la matrice de covariance de $\Phi$ comme
 
-On remarque qu'on n'a pas besoin de calculer les valeurs $x^2, \sqrt{2}xy$ ou $y^2$.
+$$\frac{1}{N} \sum_{i = 1}^{N} \Phi(\textbf{x}_i)\cdot \Phi(\textbf{x}_i) = \frac{1}{N} \sum_{i = 1}^{N} k(\textrm{x}_i, \textrm{x}_i).$$
+
+
 
 ## Transformation polynomiale
 
@@ -190,17 +218,6 @@ $$\Phi(\textrm{x})\cdot \Phi(\textrm{y}) = e^{-\frac{||\textrm{x} - \textrm{y}||
 
 On a seulement besoin de calculer une distance euclidienne, au lieu de calculer le produit scalaire entre deux vecteurs de dimension infini. 
 
-
-## Fonction noyau
-
-
-- Pour l'ACP avec noyau, on a seulement besoin du produit scalaire
-- $\Phi$ peut être une fonction non définie ou de dimension infinie, tant que son produit scalaire existe.
-- Soit $$k(\textrm{x}, \textrm{y}) = \Phi(\textrm{x})\cdot \Phi(\textrm{y}).$$
-Alors, on peut écrire la matrice de covariance de $\Phi$ comme
-
-$$\frac{1}{N} \sum_{i = 1}^{N} \Phi(\textbf{x}_i)\cdot \Phi(\textbf{x}_i) = \frac{1}{N} \sum_{i = 1}^{N} k(\textrm{x}_i, \textrm{x}_i).$$
-
 ## Normalisation des données
 
 - La formule $$\frac{1}{N} \sum_{i = 1}^{N} \textrm{k}(\textrm{x}, \textrm{x})$$ est valide si les données sont centrées, c-à-d que $$\sum_{i = 1}^{N} \Phi(\textrm{x}_i) = 0.$$
@@ -218,19 +235,6 @@ la matrice des $K_{ij}$. Alors, on peut centrer la matrice $\tilde{K}$ selon
 $$\tilde{K}_{ij} = K - 1_NK - K1_N + 1_NK1_N$$
 
 où $(1_N)_{ij} := \frac{1}{N}$ et éviter de calculer les données $\Phi(\textbf{x})$. 
-
-## Rappel de l'ACP
-
-Mathématiquement, les composantes principales sont obtenues selon une décomposition par valeurs et vecteurs propres de la matrice de covariances 
-
-$$ \frac{1}{N} \sum_{i = 1}^{N} \textbf{x}_i\textbf{x}_i^T.$$
-Correspond à la meilleure projection \textbf{linéaire} des données dans une dimension réduite.
-
-## ACP avec noyau
-
-On applique une ACP sur les données projetées [@scholkopf1997kernel]. On décompose la matrice de covariances de la matrice des transformations non linéaires
-
-$$ \frac{1}{N} \sum_{i = 1}^{N} \Phi(\textbf{x}_i)\Phi(\textbf{x}_i)^T = \frac{1}{N} \sum_{i = 1}^{N} \textrm{k}(\textrm{x}_i, \textrm{x}_i) .$$
 
 ## Lien avec le SVM
 Rappel : On veut maximiser $M$ tel que 
