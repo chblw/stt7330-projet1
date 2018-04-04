@@ -1,0 +1,36 @@
+Notes présentations   
+
+ACP parsimonieuse 
+
+- Tirer une interpretation des variables intermédiaires
+- Méthodes d'interprétation : rotation, seuils, 
+- Inconvéniant interpretation : perte performance. 
+
+- ACP parsimonieuse : faire les deux étapes en meme temps
+- SCoTLASS : maximisation variance avec pénalité LASSO 0<t<sqrt(t)
+- SPCA : ACP + régression multiple
+   - Coefficients de saturation trouvés par réduction d'erreur et non SVD
+- SPCA généralisé : 
+- Bloc, uniforme, intermédiaire
+- Bloc : important / non important
+- Uniforme : Coefficients semblables
+- Intermédiaire : combinaison de bloc et uniforme
+- Penalité lambda : moins pour les premieres CP et plos pour les autres. 
+
+ACP probabiliste
+
+- Introduire un terme d'erreur dans l'AF pour la structure de variance de l'erreur
+- On peut trouver des formules analytiques aux estimations
+- sigma 2 = moyenne des variances eliminees
+- Utiliser EM pour calculer W et sigma
+- Pas besoin de toutes les données avec l'ACP probabiliste : 
+
+
+
+
+
+
+
+
+
+
