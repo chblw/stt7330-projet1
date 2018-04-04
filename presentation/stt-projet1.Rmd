@@ -154,7 +154,7 @@ Pour une données à deux attributs $\textrm{x} = (x_1, x_2)$, on applique la tr
 \end{aligned}
 \]
 
-On remarque qu'on n'a pas besoin de calculer les valeurs $x^2, \sqrt{2}xy$ ou $y^2$.
+On remarque qu'on n'a pas besoin de calculer les valeurs $x_1^2, \sqrt{2}x_1x_2$ ou $x_2^2$.
 
 ## Projection dans un autre espace d'attributs 
 
@@ -181,7 +181,7 @@ On remarque qu'on n'a pas besoin de calculer les valeurs $x^2, \sqrt{2}xy$ ou $y
 - Soit $$k(\textrm{x}, \textrm{y}) = \Phi(\textrm{x})\cdot \Phi(\textrm{y}).$$
 Alors, on peut écrire la matrice de covariance de $\Phi$ comme
 
-$$\frac{1}{N} \sum_{i = 1}^{N} \Phi(\textbf{x}_i)\cdot \Phi(\textbf{x}_i) = \frac{1}{N} \sum_{i = 1}^{N} k(\textrm{x}_i, \textrm{x}_i).$$
+$$\frac{1}{N} \sum_{i = 1}^{N} \Phi(\textbf{x}_i) \Phi(\textbf{x}_i)^T = \frac{1}{N} \sum_{i = 1}^{N} \textrm{k}(\textrm{x}_i, \textrm{x}_i).$$
 
 
 
@@ -190,7 +190,7 @@ $$\frac{1}{N} \sum_{i = 1}^{N} \Phi(\textbf{x}_i)\cdot \Phi(\textbf{x}_i) = \fra
 Pour le polynome multinomial, on a 
 
 $$\Phi(\textrm{x}) = \sum_{\textbf{J} \in \{0, 1, \dots, N\}} w_{\textrm{J}}  \prod_{i = 1}^{k}x_{J_i}.$$
-Ce vecteur contient les données toutes les combinaisons polynomiales de dimension k. Par exemple, 
+Ce vecteur contient les données toutes les combinaisons polynomiales de dimension $k$. Par exemple, 
 
 $$x_1^k, x_2^k, \dots, x_p^k,$$
 $$x_1, x_1^2,\dots, x_1^{k-1}, x_1^{k},$$
@@ -201,8 +201,7 @@ $$x_1^{k-1}x_2, x_1^{k-1}x_3, \dots, x_1^{k-1}x_p$$
 
 La transformation produit des données dans une dimension$(p + 1)^k$. Par contre, on peut montrer que 
 
-$$\Phi(\textrm{x})\cdot \Phi(\textrm{y}) = (1 + \textrm{x}\cdot \textrm{y})^k.$$
-Cette équation se calcule en $O(N)$.
+$$\Phi(\textrm{x})\cdot \Phi(\textrm{y}) = (1 + \textrm{x}\cdot \textrm{y})^k = \textrm{k}(\textrm{x}, \textrm{y}).$$
 
 ## Transformation gaussienne
 
@@ -214,9 +213,7 @@ On considère l'espace d'attributs de toutes les combinaisons de $\Phi_k(\textrm
 
 Alors, on a 
 
-$$\Phi(\textrm{x})\cdot \Phi(\textrm{y}) = e^{-\frac{||\textrm{x} - \textrm{y}||^2}{2\sigma^2}}$$
-
-On a seulement besoin de calculer une distance euclidienne, au lieu de calculer le produit scalaire entre deux vecteurs de dimension infini. 
+$$\Phi(\textrm{x})\cdot \Phi(\textrm{y}) = e^{-\frac{||\textrm{x} - \textrm{y}||^2}{2\sigma^2}} = \textrm{k}(\textrm{x}, \textrm{y}).$$
 
 ## Normalisation des données
 
@@ -232,7 +229,7 @@ Soit $$K_{ij} = (k(\textbf{x}_i, \textbf{x}_j))_{ij} \textrm{ et } K,$$
 
 la matrice des $K_{ij}$. Alors, on peut centrer la matrice $\tilde{K}$ selon
 
-$$\tilde{K}_{ij} = K - 1_NK - K1_N + 1_NK1_N$$
+$$\tilde{K}_{ij} = (K - 1_NK - K1_N + 1_NK1_N)_{ij}$$
 
 où $(1_N)_{ij} := \frac{1}{N}$ et éviter de calculer les données $\Phi(\textbf{x})$. 
 
@@ -320,8 +317,7 @@ plot(rotated(kpc_poly), col = mnist_label, pch = 19, main = "kpca polynomial", x
 
 ### Incovénients
 - Ajuster les hyper-paramètres
-- Non-supervisé : l'ajustement des hyper-paramètres peur être compliqué
-- Perte de l'interprétabilité linéaire des premières composantes principales
+- Non-supervisé : l'ajustement des hyper-paramètres peut être compliqué
 - Ne permet pas de reconstruire les données
 
 ## Références
