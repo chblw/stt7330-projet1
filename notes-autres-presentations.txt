@@ -25,7 +25,16 @@ ACP probabiliste
 - Utiliser EM pour calculer W et sigma
 - Pas besoin de toutes les données avec l'ACP probabiliste : 
 
+Gap statistic
 
+- Simuler sans cluster
+- Permet de faire un choix de aucun cluster
+- Calculer distance inter-groupe pour différentes valeurs de K
+- Calculer l'écart entre distance intergroupe et données simulées sans groupes
+- Simuler plusieurs simulations et aggréger et comparer avec dataset sans groupes
+- Comment simuler ? tirer uniformément sur support empirique. Aucun cluster et aucune dépendance
+- Pour ajouter dépendance, faire ACP, uniformer, contraire ACP pour remettre la dépendance
+- 
 
 
 
